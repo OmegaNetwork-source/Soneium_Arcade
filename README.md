@@ -1,25 +1,24 @@
-# 🎮 Somnia Arcade
+# 🎮 Soneium Arcade
 
-A modern, Apple-inspired arcade homepage built for the Somnia Network. Featuring your first game **Bushido** and designed to scale with future games.
+A modern, Neo-Arcade homepage built for the Soneium Network. Built on the OP Stack by Sony Block Solutions Labs.
 
 ## ✨ Features
 
-- **Modern Apple-Style Design**: Clean, minimalist interface with smooth animations
-- **Somnia Brand Colors**: Vibrant cyan, blue, and purple gradients
+- **Soneium Brand Aesthetic**: Monochrome tech style with neon accents
+- **Neo-Arcade Theme**: Flashy interactive grid backgrounds and glassmorphism
 - **Responsive Layout**: Optimized for all device sizes
 - **Smooth Animations**: Parallax effects, hover interactions, and scroll animations
 - **Game Showcase**: Featured game cards with stats and "Play Now" buttons
-- **Network Stats**: Display Somnia Network's impressive capabilities
+- **Network Stats**: Display Soneium Network's high-performance capabilities (L2 by Sony)
 - **Ready to Scale**: Easy to add more games as your arcade grows
 
 ## 🎨 Design Philosophy
 
-Inspired by Apple's design language:
-- Frosted glass effects (backdrop blur)
-- Smooth transitions and micro-interactions
-- Generous white space
-- Typography hierarchy
-- Gradient accents using Somnia colors
+- Soneium monochrome style (Black/White/Silver)
+- Neon active states and glowing accents
+- Geometric 3D elements
+- Perspective grid animations
+- Flashy arcade interactions
 
 ## 🚀 Getting Started
 
@@ -63,10 +62,9 @@ All colors are defined in CSS variables in `styles.css`:
 
 ```css
 :root {
-    --somnia-cyan: #00D4FF;
-    --somnia-blue: #0080FF;
-    --somnia-purple: #6B00E5;
-    --somnia-dark-purple: #4A0099;
+    --soneium-black: #000000;
+    --soneium-white: #FFFFFF;
+    --soneium-active: #45ffb1;
 }
 ```
 
@@ -116,16 +114,22 @@ Your first game is prominently featured with:
 - Player count and rating display
 - Prominent "Play Now" call-to-action
 
-## 🌐 Somnia Network
+## 🌐 Soneium Network
 
-Built to showcase the power of Somnia Network:
-- 400,000+ TPS capacity
-- Sub-second transaction speed
-- Ultra-low transaction costs
+Built to showcase the power of Soneium Network:
+- Built by Sony Block Solutions Labs
+- Leveraging the OP Stack
+- Sub-second block times
+- Extremely scalable and low cost
+
+**Network config:** Chain ID `1868` (0x74c), RPCs and explorers are in [SONEIUM_NETWORK_CONFIG.md](SONEIUM_NETWORK_CONFIG.md). Use that file when configuring games (Quake, Arcade Bots, Snake, Space Game) to run on Soneium instead of Somnia.
+
+**Leaderboards:** One contract (`contracts/SoneiumArcadeLeaderboard.sol`) is used by all four games. Deploy it once to Soneium, then set the same address in each game. See’s  See [DEPLOY_LEADERBOARDS_SONEIUM.md](DEPLOY_LEADERBOARDS_SONEIUM.md).
+
 
 ## 📄 License
 
-This project is open source and available for use in your Somnia Arcade.
+This project is open source and available for use in your Soneium Arcade.
 
 ## 🤝 Contributing
 
@@ -133,5 +137,5 @@ Feel free to customize and extend this arcade homepage as your game collection g
 
 ---
 
-Built with ❤️ for the Somnia Network
+Built with ❤️ for the Soneium Network
 

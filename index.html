@@ -4,7 +4,12 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Somnia Arcade</title>
+    <title>Soneium Arcade</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;800;900&family=Orbitron:wght@400;700;900&display=swap"
+        rel="stylesheet">
     <link rel="stylesheet" href="styles.css">
 </head>
 
@@ -12,56 +17,43 @@
     <!-- Navigation -->
     <nav class="navbar">
         <div class="nav-content">
-            <div class="logo">
-                <div class="logo-icon"></div>
-                <span>Somnia Arcade</span>
-            </div>
+            <a href="/" class="logo" aria-label="Soneium Arcade home">
+                <svg class="logo-mark" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                    <rect width="40" height="40" rx="8" stroke="currentColor" stroke-width="2" fill="none"/>
+                    <path d="M8 14h24M8 20h24M8 26h16" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+                    <circle cx="28" cy="26" r="3" fill="currentColor"/>
+                </svg>
+                <span class="logo-text">Soneium Arcade</span>
+            </a>
             <div class="nav-links">
                 <a href="#games">Games</a>
                 <a href="#collection">Collection</a>
                 <a href="#about">About</a>
-                <a href="#somi">SOMI</a>
-                <div class="wallet-section">
-                    <div id="somi-balance" class="somi-balance" style="display: none;">
-                        <span class="somi-label">SOMI:</span>
-                        <span id="somi-amount" class="somi-amount">0</span>
-                    </div>
-                    <button class="btn-connect" id="connect-wallet-btn">Connect Wallet</button>
-                </div>
             </div>
         </div>
     </nav>
 
-    <!-- Hero Section -->
+    <!-- Hero Section - Arcade Screen -->
     <section class="hero">
-        <div class="hero-content">
-            <div class="hero-badge">Built on Somnia Network</div>
-            <h1 class="hero-title">
-                Welcome to the
-                <span class="gradient-text">Future of Gaming</span>
-            </h1>
-            <p class="hero-powered">Powered by Omega</p>
-            <p class="hero-subtitle">
-                Play games, compete with friends, and win prizes. Wave 1 is launching soon on Somnia.
-            </p>
-            <div class="hero-somi-notice">
-                <p class="somi-notice-text">💎 <strong>SOMI required</strong> for full experience. <a href="#somi"
-                        class="somi-link">Learn more</a></p>
+        <div class="hero-screen">
+            <canvas id="hero-game-bg" class="hero-game-bg" aria-hidden="true"></canvas>
+            <div class="hero-screen-overlay"></div>
+            <div class="hero-scanlines" aria-hidden="true"></div>
+            <div class="hero-content">
+                <div class="hero-badge">Built on Soneium Network</div>
+                <h1 class="hero-title">
+                    Welcome to the
+                    <span class="gradient-text">Future of Gaming</span>
+                </h1>
+                <p class="hero-powered">Powered by Omega</p>
+                <p class="hero-subtitle">
+                    Play games, compete with friends, and win prizes. Wave 1 is launching soon on Soneium.
+                </p>
+                <div class="hero-buttons">
+                    <a href="#games" class="btn-primary">Explore Games</a>
+                    <a href="#collection" class="btn-secondary">Explore Collection</a>
+                </div>
             </div>
-            <div class="hero-buttons">
-                <a href="#games" class="btn-primary">Explore Games</a>
-                <a href="#collection" class="btn-secondary">Explore Collection</a>
-            </div>
-        </div>
-        <div class="hero-visual">
-            <div class="floating-card card-1"></div>
-            <div class="floating-card card-2"></div>
-            <div class="floating-card card-3"></div>
-            <div class="floating-orb orb-1"></div>
-            <div class="floating-orb orb-2"></div>
-            <div class="floating-orb orb-3"></div>
-            <div class="floating-orb orb-4"></div>
-            <div class="floating-orb orb-5"></div>
         </div>
     </section>
 
@@ -70,53 +62,6 @@
         <div class="section-header">
             <h2>Featured Games</h2>
             <p>Immersive experiences powered by blockchain technology</p>
-
-            <div class="quest-notice"
-                style="background: linear-gradient(90deg, rgba(20,20,40,0.8) 0%, rgba(40,40,90,0.8) 100%); padding: 20px; border-radius: 12px; border: 1px solid #4a90e2; margin: 10px auto 30px; text-align: center; max-width: 800px; box-shadow: 0 4px 20px rgba(74, 144, 226, 0.2);">
-                <h3
-                    style="color: #4a90e2; margin: 0 0 15px 0; font-size: 1.5em; text-transform: uppercase; letter-spacing: 2px;">
-                    🏆 Quest Tracker</h3>
-                <p style="margin: 0 0 20px; color: #e0e0e0; font-size: 1rem; line-height: 1.5;">
-                    Your score is tracked globally across <strong>ALL</strong> games. Check your progress towards the
-                    5,000 point goal.
-                </p>
-
-                <div class="quest-input-group"
-                    style="display: flex; gap: 10px; justify-content: center; margin-bottom: 20px; flex-wrap: wrap;">
-                    <input type="text" id="quest-wallet-input" placeholder="Enter Wallet Address (0x...)"
-                        style="background: rgba(0,0,0,0.3); border: 1px solid rgba(255,255,255,0.1); padding: 12px 20px; border-radius: 50px; color: white; width: 350px; font-family: monospace; outline: none; backdrop-filter: blur(10px);">
-                    <button id="btn-check-quest" class="btn-primary"
-                        style="padding: 12px 30px; border-radius: 50px; cursor: pointer; border: none; font-weight: 600;">Check
-                        Status</button>
-                </div>
-
-                <div id="quest-results"
-                    style="display: none; background: rgba(0,0,0,0.2); border-radius: 20px; padding: 20px; border: 1px solid rgba(255,255,255,0.05);">
-                    <div
-                        style="display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 20px; text-align: center;">
-                        <div class="quest-stat">
-                            <span
-                                style="display: block; font-size: 0.8em; color: #aaa; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 5px;">Total
-                                Score</span>
-                            <span id="quest-total-score"
-                                style="display: block; font-size: 2em; font-weight: bold; color: #fff; text-shadow: 0 0 20px rgba(0, 212, 255, 0.5);">0</span>
-                        </div>
-                        <div class="quest-stat">
-                            <span
-                                style="display: block; font-size: 0.8em; color: #aaa; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 5px;">Status</span>
-                            <span id="quest-status-text"
-                                style="display: block; font-size: 1.5em; font-weight: bold; color: #ffcc00;">In
-                                Progress</span>
-                        </div>
-                        <div class="quest-stat">
-                            <span
-                                style="display: block; font-size: 0.8em; color: #aaa; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 5px;">Remaining</span>
-                            <span id="quest-remaining"
-                                style="display: block; font-size: 2em; font-weight: bold; color: #ff4f6d;">5000</span>
-                        </div>
-                    </div>
-                </div>
-            </div>
         </div>
 
         <div class="wave-wrapper">
@@ -125,27 +70,14 @@
                 <!-- Quake – Highlight Game (full width, top) -->
                 <div class="game-card quake-card quake-highlight">
                     <div class="game-image quake-bg">
-                        <video class="quake-trailer" src="quake-trailer.mp4" autoplay loop muted playsinline preload="auto" aria-label="Quake trailer"></video>
+                        <video class="quake-trailer" src="quake-trailer.mp4" autoplay loop muted playsinline
+                            preload="auto" aria-label="Quake trailer"></video>
                     </div>
                     <div class="game-info">
                         <h3>Quake</h3>
-                        <p>Experience the classic arena shooter that defined a generation. Fast-paced combat, dark fantasy atmosphere, and multiplayer mayhem from id Software.</p>
-                        <a href="https://quake.omeganetwork.co/" target="_blank" rel="noopener noreferrer" class="btn-play">Play Now</a>
-                    </div>
-                </div>
-
-                <!-- Bushido Game Card -->
-                <div class="game-card featured">
-                    <div class="game-image bushido-bg">
-                        <img src="https://i.postimg.cc/6TffNgmM/bushido-game.png" alt="Bushido Game"
-                            class="game-cover-image">
-                        <div class="game-badge">Now Live</div>
-                    </div>
-                    <div class="game-info">
-                        <h3>Bushido</h3>
-                        <p>Master the way of the warrior in this action-packed blockchain game</p>
-
-                        <a href="https://bushido-omega.vercel.app/" target="_blank" class="btn-play">Play Now</a>
+                        <p>Experience the classic arena shooter that defined a generation. Fast-paced combat, dark
+                            fantasy atmosphere, and multiplayer mayhem from id Software.</p>
+                        <a href="games/Omega_Quake/index.html" class="btn-play">Play Now</a>
                     </div>
                 </div>
 
@@ -178,8 +110,7 @@
                         <p>Outmaneuver incoming asteroids, collect power cores, and climb the leaderboard in this
                             on-chain arcade shooter.</p>
 
-                        <a href="https://spacepilot.solarstudios.co/" target="_blank" rel="noopener noreferrer"
-                            class="btn-play">Play Now</a>
+                        <a href="games/spacegame/index.html" class="btn-play">Play Now</a>
                     </div>
                 </div>
 
@@ -205,15 +136,13 @@
                         <p>Glide through the neon arena, absorb energy orbs, and outmaneuver rival serpents in this
                             multiplayer snake royale.</p>
 
-                        <a href="https://snake.solarstudios.co/" target="_blank" rel="noopener noreferrer"
-                            class="btn-play">Play Now</a>
+                        <a href="games/somniasnake/index.html" class="btn-play">Play Now</a>
                     </div>
                 </div>
 
                 <!-- Arcade Bot Game Card -->
                 <div class="game-card">
-                    <div class="game-image"
-                        style="background: linear-gradient(135deg, #2b32b2 0%, #1488cc 100%); position: relative; overflow: hidden; display: flex; align-items: center; justify-content: center; flex-direction: column;">
+                    <div class="game-image arcade-bot-bg">
                         <div class="game-badge">New Release</div>
 
                         <!-- Retro Robot Avatar -->
@@ -273,17 +202,14 @@
                             </style>
                         </svg>
 
-                        <div
-                            style="font-family: 'Courier New', monospace; font-weight: 900; color: #fff; text-align: center; margin-top: 5px; text-shadow: 2px 2px 0 #0059b3; font-size: 20px; letter-spacing: 2px; z-index: 2;">
-                            ARCADE BOT
-                        </div>
+                        <div class="arcade-bot-label">ARCADE BOT</div>
                     </div>
                     <div class="game-info">
                         <h3>Arcade Bot</h3>
                         <p>Battle through waves of enemies, collect power-ups, and defeat the boss in this retro action
                             platformer.</p>
 
-                        <a href="https://arcadebots.solarstudios.co/" target="_blank" class="btn-play">Play Now</a>
+                        <a href="games/arcadebots/dist/index.html" class="btn-play">Play Now</a>
                     </div>
                 </div>
 
@@ -349,7 +275,7 @@
     <!-- Features Section -->
     <section class="features-section">
         <div class="section-header">
-            <h2>Why Somnia Arcade?</h2>
+            <h2>Why Soneium Arcade?</h2>
             <p>Built for the next generation of gamers</p>
         </div>
 
@@ -357,7 +283,7 @@
             <div class="feature-card">
                 <div class="feature-icon icon-speed"></div>
                 <h3>Lightning Fast</h3>
-                <p>Experience instant transactions and zero lag with Somnia Network's cutting-edge technology</p>
+                <p>Experience instant transactions and zero lag with Soneium Network's cutting-edge technology</p>
             </div>
 
             <div class="feature-card">
@@ -378,18 +304,12 @@
     <section id="collection" class="collection-section">
         <div class="section-header">
             <h2>Arcade Bots</h2>
-            <p>3100 Arcade Gaming Icons Launching on Somnia. Coming this December</p>
+            <p>3100 Arcade Gaming Icons Launching on Soneium. Coming soon.</p>
         </div>
 
         <div class="collection-gallery">
             <div class="gallery-item" data-page-url="https://postimg.cc/0MQBn2ZX" data-image-code="0MQBn2ZX">
                 <img src="" alt="Collection Item 1" loading="lazy">
-                <div class="gallery-overlay">
-                    <button class="gallery-view-btn">View</button>
-                </div>
-            </div>
-            <div class="gallery-item" data-page-url="https://postimg.cc/qzdGMvyV" data-image-code="qzdGMvyV">
-                <img src="" alt="Collection Item 2" loading="lazy">
                 <div class="gallery-overlay">
                     <button class="gallery-view-btn">View</button>
                 </div>
@@ -442,12 +362,6 @@
                     <button class="gallery-view-btn">View</button>
                 </div>
             </div>
-            <div class="gallery-item" data-page-url="https://postimg.cc/K4PSq45T" data-image-code="K4PSq45T">
-                <img src="" alt="Collection Item 11" loading="lazy">
-                <div class="gallery-overlay">
-                    <button class="gallery-view-btn">View</button>
-                </div>
-            </div>
             <div class="gallery-item" data-page-url="https://postimg.cc/Y45Z8wGY" data-image-code="Y45Z8wGY">
                 <img src="" alt="Collection Item 12" loading="lazy">
                 <div class="gallery-overlay">
@@ -487,76 +401,62 @@
         <img class="modal-content" id="modalImage" onclick="event.stopPropagation();">
     </div>
 
-    <!-- SOMI Section -->
-    <section id="somi" class="somi-section">
-        <div class="section-header">
-            <h2>Unlock the Full Experience with SOMI</h2>
-            <p>Connect your wallet and get SOMI to access premium features</p>
-        </div>
-
-        <div class="somi-comparison">
-            <div class="comparison-card">
-                <div class="comparison-header without">
-                    <h3>Without SOMI</h3>
-                </div>
-                <ul class="comparison-features">
-                    <li class="limited">✓ Basic gameplay</li>
-                    <li class="limited">✓ Limited game modes</li>
-                    <li class="limited">✓ No rewards</li>
-                    <li class="limited">✓ No leaderboard access</li>
-                    <li class="limited">✓ No NFT features</li>
-                </ul>
-            </div>
-
-            <div class="comparison-card featured">
-                <div class="comparison-header with">
-                    <h3>With SOMI</h3>
-                    <span class="badge-premium">Premium</span>
-                </div>
-                <ul class="comparison-features">
-                    <li class="premium">✓ Full game access</li>
-                    <li class="premium">✓ All game modes unlocked</li>
-                    <li class="premium">✓ Earn rewards & prizes</li>
-                    <li class="premium">✓ Global leaderboards</li>
-                    <li class="premium">✓ NFT integration</li>
-                    <li class="premium">✓ Exclusive tournaments</li>
-                    <li class="premium">✓ Early access to new games</li>
-                </ul>
-            </div>
-        </div>
-    </section>
-
     <!-- About Section -->
     <section id="about" class="about-section">
-        <div class="about-content">
-            <div class="about-text">
-                <h2>Built on Somnia Network</h2>
-                <p>
-                    Somnia Arcade leverages the power of the Somnia Network to deliver
-                    unparalleled gaming experiences. With sub-second finality and massive
-                    scalability, we're bringing the future of gaming to life today.
-                </p>
-                <div class="about-stats">
-                    <div class="about-stat">
-                        <h4>400,000+</h4>
-                        <p>TPS Capacity</p>
-                    </div>
-                    <div class="about-stat">
-                        <h4>&lt;1s</h4>
-                        <p>Transaction Speed</p>
-                    </div>
-                    <div class="about-stat">
-                        <h4>$0.00001</h4>
-                        <p>Avg Transaction Cost</p>
+        <div class="about-inner">
+            <div class="about-content">
+                <div class="about-text">
+                    <h2>Built on Soneium Network</h2>
+                    <p>
+                        Soneium Arcade leverages the power of the Soneium Network to deliver
+                        unparalleled gaming experiences. Built by Sony Block Solutions Labs,
+                        leveraging the OP Stack for maximum performance and security.
+                    </p>
+                    <div class="about-stats">
+                        <div class="about-stat">
+                            <span class="about-stat-icon" aria-hidden="true">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>
+                            </span>
+                            <h4>Sub-Second</h4>
+                            <p>Block Times</p>
+                        </div>
+                        <div class="about-stat">
+                            <span class="about-stat-icon" aria-hidden="true">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><path d="M12 2v4M12 18v4M4.93 4.93l2.83 2.83M16.24 16.24l2.83 2.83M2 12h4M18 12h4M4.93 19.07l2.83-2.83M16.24 7.76l2.83-2.83"/><circle cx="12" cy="12" r="3"/></svg>
+                            </span>
+                            <h4>Scalable</h4>
+                            <p>L2 Technology</p>
+                        </div>
+                        <div class="about-stat">
+                            <span class="about-stat-icon" aria-hidden="true">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
+                            </span>
+                            <h4>Low Cost</h4>
+                            <p>Transaction Fees</p>
+                        </div>
                     </div>
                 </div>
-            </div>
-            <div class="about-visual">
-                <div class="network-visualization">
-                    <div class="network-node node-1"></div>
-                    <div class="network-node node-2"></div>
-                    <div class="network-node node-3"></div>
-                    <div class="network-node node-4"></div>
+                <div class="about-visual">
+                    <div class="network-visualization" aria-hidden="true">
+                        <svg viewBox="0 0 200 200" class="network-svg">
+                            <defs>
+                                <linearGradient id="nodeGlow" x1="0%" y1="0%" x2="100%" y2="100%">
+                                    <stop offset="0%" stop-color="#fff" stop-opacity="0.9"/>
+                                    <stop offset="100%" stop-color="#fff" stop-opacity="0.2"/>
+                                </linearGradient>
+                            </defs>
+                            <line x1="100" y1="30" x2="60" y2="90" stroke="rgba(255,255,255,0.15)" stroke-width="1"/>
+                            <line x1="100" y1="30" x2="140" y2="90" stroke="rgba(255,255,255,0.15)" stroke-width="1"/>
+                            <line x1="100" y1="30" x2="100" y2="170" stroke="rgba(255,255,255,0.15)" stroke-width="1"/>
+                            <line x1="60" y1="90" x2="100" y2="170" stroke="rgba(255,255,255,0.12)" stroke-width="1"/>
+                            <line x1="140" y1="90" x2="100" y2="170" stroke="rgba(255,255,255,0.12)" stroke-width="1"/>
+                            <line x1="60" y1="90" x2="140" y2="90" stroke="rgba(255,255,255,0.1)" stroke-width="1"/>
+                            <circle cx="100" cy="30" r="12" fill="url(#nodeGlow)" class="network-dot network-dot-1"/>
+                            <circle cx="60" cy="90" r="10" fill="url(#nodeGlow)" class="network-dot network-dot-2"/>
+                            <circle cx="140" cy="90" r="10" fill="url(#nodeGlow)" class="network-dot network-dot-3"/>
+                            <circle cx="100" cy="170" r="14" fill="url(#nodeGlow)" class="network-dot network-dot-4"/>
+                        </svg>
+                    </div>
                 </div>
             </div>
         </div>
@@ -566,43 +466,46 @@
     <footer class="footer">
         <div class="footer-content">
             <div class="footer-section">
-                <div class="logo">
-                    <div class="logo-icon"></div>
-                    <span>Somnia Arcade</span>
-                </div>
-                <p>Next-generation gaming on the Somnia Network</p>
+                <a href="/" class="logo footer-logo" aria-label="Back to Soneium Arcade home">
+                    <svg class="logo-mark" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                        <rect width="40" height="40" rx="8" stroke="currentColor" stroke-width="2" fill="none"/>
+                        <path d="M8 14h24M8 20h24M8 26h16" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+                        <circle cx="28" cy="26" r="3" fill="currentColor"/>
+                    </svg>
+                    <span class="logo-text">Soneium Arcade</span>
+                </a>
+                <p>Next-generation gaming on the Soneium Network</p>
             </div>
             <div class="footer-section">
                 <h4>Games</h4>
-                <a href="https://bushido-omega.vercel.app/" target="_blank" rel="noopener noreferrer">Bushido</a>
-                <a href="https://spacepilot.solarstudios.co/" target="_blank" rel="noopener noreferrer">Space Pilot</a>
-                <a href="https://snake.solarstudios.co/" target="_blank" rel="noopener noreferrer">Snake Arena</a>
+                <a href="games/Omega_Quake/index.html">Quake</a>
+                <a href="games/spacegame/index.html">Space Pilot</a>
+                <a href="games/somniasnake/index.html">Snake Arena</a>
             </div>
             <div class="footer-section">
                 <h4>Games</h4>
                 <a href="#games">Hall of Fame</a>
                 <a href="#games">Coming Soon</a>
-                <a href="https://arcadebots.solarstudios.co/" target="_blank">Arcade Bot</a>
+                <a href="games/arcadebots/dist/index.html">Arcade Bot</a>
             </div>
             <div class="footer-section">
                 <h4>Community</h4>
-                <a href="https://discord.gg/8tueCrvBB" target="_blank" rel="noopener noreferrer"
-                    class="social-link">
+                <a href="https://discord.gg/8tueCrvBB" target="_blank" rel="noopener noreferrer" class="social-link">
                     <span class="social-icon">💬</span>
                     <span>Discord</span>
                 </a>
-                <a href="https://x.com/somniaarcade?s=21&t=xVCZdrDlia_eMGUlcbqvGQ" target="_blank" rel="noopener noreferrer" class="social-link">
+                <a href="https://x.com/somniaarcade?s=21&t=xVCZdrDlia_eMGUlcbqvGQ" target="_blank"
+                    rel="noopener noreferrer" class="social-link">
                     <span class="social-icon">𝕏</span>
                     <span>Twitter</span>
                 </a>
             </div>
         </div>
         <div class="footer-bottom">
-            <p>&copy; 2025 Somnia Arcade. All rights reserved.</p>
+            <p>&copy; 2025 Soneium Arcade. All rights reserved.</p>
         </div>
     </footer>
 
-    <script src="https://cdn.ethers.io/lib/ethers-5.7.umd.min.js"></script>
     <script src="script.js"></script>
 </body>
 

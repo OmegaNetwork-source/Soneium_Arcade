@@ -12,24 +12,6 @@ document.querySelectorAll('a[href^="#"]').forEach(anchor => {
     });
 });
 
-// Navbar background on scroll
-const navbar = document.querySelector('.navbar');
-let lastScroll = 0;
-
-window.addEventListener('scroll', () => {
-    const currentScroll = window.pageYOffset;
-
-    if (currentScroll > 50) {
-        navbar.style.background = 'rgba(10, 10, 15, 0.95)';
-        navbar.style.boxShadow = '0 10px 30px rgba(0, 0, 0, 0.3)';
-    } else {
-        navbar.style.background = 'rgba(10, 10, 15, 0.8)';
-        navbar.style.boxShadow = 'none';
-    }
-
-    lastScroll = currentScroll;
-});
-
 // Intersection Observer for fade-in animations
 const observerOptions = {
     threshold: 0.1,
@@ -53,216 +35,103 @@ document.querySelectorAll('.game-card, .feature-card, .about-section').forEach(e
     observer.observe(el);
 });
 
-// Wallet Connection State
-let walletConnected = false;
-let walletAddress = null;
-let somiBalance = 0;
-
-// SOMI Token Contract Address (placeholder - update with actual contract)
-// TODO: Replace with actual SOMI token contract address
-const SOMI_CONTRACT_ADDRESS = '0x0000000000000000000000000000000000000000'; // Update with real address
-const SOMI_DECIMALS = 18; // Standard ERC20 decimals, adjust if different
-
-// Connect Wallet Button
-const connectWalletBtn = document.getElementById('connect-wallet-btn');
-const somiBalanceNav = document.getElementById('somi-balance');
-const somiAmountNav = document.getElementById('somi-amount');
-
-connectWalletBtn?.addEventListener('click', async (e) => {
-    e.preventDefault();
-    await connectWallet();
-});
-
-// Wallet Connection Function
-async function connectWallet() {
-    try {
-        // Check if Web3 is available
-        if (typeof window.ethereum !== 'undefined') {
-            // Request account access
-            const accounts = await window.ethereum.request({ method: 'eth_requestAccounts' });
-            walletAddress = accounts[0];
-            walletConnected = true;
-
-            // Update UI
-            updateWalletUI();
-
-            // Fetch SOMI balance
-            await fetchSomiBalance();
-
-            // Listen for account changes
-            window.ethereum.on('accountsChanged', handleAccountsChanged);
-            window.ethereum.on('chainChanged', () => {
-                window.location.reload();
-            });
-        } else {
-            // Fallback: show mock connection for demo
-            walletAddress = '0x' + Array.from({ length: 40 }, () => Math.floor(Math.random() * 16).toString(16)).join('');
-            walletConnected = true;
-            updateWalletUI();
-            // Mock balance for demo
-            somiBalance = Math.floor(Math.random() * 10000) + 100;
-            updateSomiBalance();
-            alert('Wallet connected! (Demo mode - connect a real wallet for production)');
-        }
-    } catch (error) {
-        console.error('Error connecting wallet:', error);
-        alert('Failed to connect wallet. Please try again.');
-    }
-}
-
-// Handle account changes
-function handleAccountsChanged(accounts) {
-    if (accounts.length === 0) {
-        disconnectWallet();
-    } else {
-        walletAddress = accounts[0];
-        fetchSomiBalance();
-    }
-}
-
-// Update Wallet UI
-function updateWalletUI() {
-    if (walletConnected) {
-        connectWalletBtn.textContent = `${walletAddress.slice(0, 6)}...${walletAddress.slice(-4)}`;
-        connectWalletBtn.classList.add('connected');
-        somiBalanceNav.style.display = 'flex';
-
-        // Auto-fill Quest Tracker
-        const questInput = document.getElementById('quest-wallet-input');
-        if (questInput) questInput.value = walletAddress;
-    } else {
-        connectWalletBtn.textContent = 'Connect Wallet';
-        connectWalletBtn.classList.remove('connected');
-        somiBalanceNav.style.display = 'none';
-    }
-}
-
-// Fetch SOMI Balance
-async function fetchSomiBalance() {
-    if (!walletConnected || !walletAddress) return;
-
-    try {
-        if (typeof window.ethereum !== 'undefined' && typeof ethers !== 'undefined') {
-            const provider = new ethers.providers.Web3Provider(window.ethereum);
-
-            // If SOMI contract address is set, fetch token balance
-            if (SOMI_CONTRACT_ADDRESS && SOMI_CONTRACT_ADDRESS !== '0x0000000000000000000000000000000000000000') {
-                try {
-                    // ERC20 standard balanceOf function
-                    const contract = new ethers.Contract(
-                        SOMI_CONTRACT_ADDRESS,
-                        [
-                            "function balanceOf(address owner) view returns (uint256)",
-                            "function decimals() view returns (uint8)"
-                        ],
-                        provider
-                    );
-
-                    // Get balance and decimals
-                    const [balance, decimals] = await Promise.all([
-                        contract.balanceOf(walletAddress),
-                        contract.decimals().catch(() => SOMI_DECIMALS) // Fallback to default if decimals() not available
-                    ]);
-
-                    // Convert from wei/smallest unit to human-readable format
-                    somiBalance = parseFloat(ethers.utils.formatUnits(balance, decimals));
-
-                } catch (tokenError) {
-                    console.error('Error fetching SOMI token balance:', tokenError);
-                    // Fallback to native balance if token fetch fails
-                    try {
-                        const balance = await provider.getBalance(walletAddress);
-                        somiBalance = parseFloat(ethers.utils.formatEther(balance));
-                        console.warn('Showing native balance instead of SOMI token balance. Please set SOMI_CONTRACT_ADDRESS.');
-                    } catch (nativeError) {
-                        console.error('Error fetching native balance:', nativeError);
-                        somiBalance = 0;
-                    }
-                }
-            } else {
-                // No contract address set, fetch native balance as fallback
-                try {
-                    const balance = await provider.getBalance(walletAddress);
-                    somiBalance = parseFloat(ethers.utils.formatEther(balance));
-                    console.warn('SOMI contract address not set. Showing native balance. Please set SOMI_CONTRACT_ADDRESS in script.js to show actual SOMI token balance.');
-                } catch (nativeError) {
-                    console.error('Error fetching native balance:', nativeError);
-                    somiBalance = 0;
-                }
-            }
-        } else if (typeof window.ethereum !== 'undefined') {
-            // ethers.js not loaded, use direct RPC call
-            try {
-                const balance = await window.ethereum.request({
-                    method: 'eth_getBalance',
-                    params: [walletAddress, 'latest']
-                });
-                somiBalance = parseInt(balance, 16) / Math.pow(10, 18);
-                console.warn('ethers.js not loaded. Showing native balance. Please include ethers.js to fetch SOMI token balance.');
-            } catch (error) {
-                console.error('Error fetching balance:', error);
-                somiBalance = 0;
-            }
-        } else {
-            somiBalance = 0;
-        }
-
-        updateSomiBalance();
-    } catch (error) {
-        console.error('Error fetching SOMI balance:', error);
-        somiBalance = 0;
-        updateSomiBalance();
-    }
-}
-
-// Update SOMI Balance Display
-function updateSomiBalance() {
-    const formattedBalance = somiBalance.toLocaleString(undefined, {
-        minimumFractionDigits: 2,
-        maximumFractionDigits: 2
-    });
-    somiAmountNav.textContent = formattedBalance;
-}
-
-// Disconnect Wallet
-function disconnectWallet() {
-    walletConnected = false;
-    walletAddress = null;
-    somiBalance = 0;
-    updateWalletUI();
-    updateSomiBalance();
-}
-
-// Check if already connected on page load
-window.addEventListener('load', async () => {
-    if (typeof window.ethereum !== 'undefined') {
-        try {
-            const accounts = await window.ethereum.request({ method: 'eth_accounts' });
-            if (accounts.length > 0) {
-                walletAddress = accounts[0];
-                walletConnected = true;
-                updateWalletUI();
-                await fetchSomiBalance();
-            }
-        } catch (error) {
-            console.error('Error checking wallet connection:', error);
-        }
-    }
-});
-
 // Play Button functionality - now handled by direct links in HTML
-// Bushido links to: https://bushido-omega.vercel.app/
 
-// Parallax effect for hero visual elements
-window.addEventListener('scroll', () => {
-    const scrolled = window.pageYOffset;
-    const floatingCards = document.querySelectorAll('.floating-card');
+// Hero arcade screen: game-style background animation
+(function () {
+    const canvas = document.getElementById('hero-game-bg');
+    if (!canvas) return;
 
-    floatingCards.forEach((card, index) => {
-        const speed = (index + 1) * 0.3;
-        card.style.transform = `translateY(${scrolled * speed}px)`;
-    });
-});
+    const ctx = canvas.getContext('2d');
+    let w, h;
+    let stars = [];
+    let gridOffset = 0;
+    let ships = [];
+    const STAR_COUNT = 80;
+    const GRID_SPACING = 48;
+
+    function resize() {
+        w = canvas.width = canvas.offsetWidth;
+        h = canvas.height = canvas.offsetHeight;
+        if (stars.length === 0) {
+            for (let i = 0; i < STAR_COUNT; i++) {
+                stars.push({
+                    x: Math.random() * w,
+                    y: Math.random() * h,
+                    size: 0.5 + Math.random() * 1.2,
+                    speed: 0.3 + Math.random() * 1.2,
+                    opacity: 0.3 + Math.random() * 0.5
+                });
+            }
+            for (let i = 0; i < 5; i++) {
+                ships.push({
+                    x: Math.random() * w,
+                    y: Math.random() * h,
+                    vx: (Math.random() - 0.5) * 0.8,
+                    vy: 0.2 + Math.random() * 0.4,
+                    size: 4 + Math.random() * 6
+                });
+            }
+        }
+    }
+
+    function draw() {
+        if (!w || !h) return;
+        ctx.fillStyle = '#000';
+        ctx.fillRect(0, 0, w, h);
+
+        gridOffset = (gridOffset + 0.6) % GRID_SPACING;
+        ctx.strokeStyle = 'rgba(255,255,255,0.06)';
+        ctx.lineWidth = 1;
+        for (let x = -GRID_SPACING; x < w + GRID_SPACING; x += GRID_SPACING) {
+            const sx = x + (gridOffset * (x / w));
+            ctx.beginPath();
+            ctx.moveTo(sx, 0);
+            ctx.lineTo(sx, h);
+            ctx.stroke();
+        }
+        for (let y = -GRID_SPACING; y < h + GRID_SPACING; y += GRID_SPACING) {
+            const sy = (y + gridOffset) % (h + GRID_SPACING);
+            ctx.beginPath();
+            ctx.moveTo(0, sy);
+            ctx.lineTo(w, sy);
+            ctx.stroke();
+        }
+
+        stars.forEach(s => {
+            s.y -= s.speed;
+            if (s.y < 0) { s.y = h; s.x = Math.random() * w; }
+            ctx.fillStyle = `rgba(255,255,255,${s.opacity})`;
+            ctx.beginPath();
+            ctx.arc(s.x, s.y, s.size, 0, Math.PI * 2);
+            ctx.fill();
+        });
+
+        ships.forEach(ship => {
+            ship.x += ship.vx;
+            ship.y += ship.vy;
+            if (ship.x < -20 || ship.x > w + 20) ship.vx *= -1;
+            if (ship.y < -20 || ship.y > h + 20) {
+                ship.y = ship.y < 0 ? h + 10 : -10;
+                ship.x = Math.random() * w;
+            }
+            ctx.strokeStyle = 'rgba(255,255,255,0.2)';
+            ctx.lineWidth = 1.5;
+            ctx.beginPath();
+            ctx.moveTo(ship.x - ship.size, ship.y + ship.size);
+            ctx.lineTo(ship.x, ship.y - ship.size);
+            ctx.lineTo(ship.x + ship.size, ship.y + ship.size);
+            ctx.closePath();
+            ctx.stroke();
+        });
+
+        requestAnimationFrame(draw);
+    }
+
+    window.addEventListener('resize', resize);
+    resize();
+    draw();
+})();
 
 // Add hover effect to game cards
 document.querySelectorAll('.game-card').forEach(card => {
@@ -309,10 +178,10 @@ function animateCounter(element, target, duration = 2000) {
 const statsObserver = new IntersectionObserver((entries) => {
     entries.forEach(entry => {
         if (entry.isIntersecting) {
+            const statValue = entry.target.querySelector('.stat-value');
             if (statValue && !statValue.classList.contains('animated')) {
                 const rawValue = statValue.textContent.replace(/,/g, '');
                 const target = parseInt(rawValue);
-
                 if (!isNaN(target)) {
                     animateCounter(statValue, target);
                     statValue.classList.add('animated');
@@ -514,74 +383,8 @@ document.addEventListener('DOMContentLoaded', async () => {
 });
 
 // Console easter egg
-console.log('%c🎮 Welcome to Somnia Arcade!', 'font-size: 20px; color: #00D4FF; font-weight: bold;');
-console.log('%cBuilt on the Somnia Network', 'font-size: 14px; color: #6B00E5;');
-console.log('%cInterested in building games? Contact us!', 'font-size: 12px; color: #0080FF;');
+console.log('%c🎮 Welcome to Soneium Arcade!', 'font-size: 20px; color: #ffffff; font-weight: bold;');
+console.log('%cBuilt on the Soneium Network', 'font-size: 14px; color: #888888;');
+console.log('%cInterested in building games? Contact us!', 'font-size: 12px; color: #444444;');
 
-// Quest Tracker Logic
-const questCheckBtn = document.getElementById('btn-check-quest');
-const questInput = document.getElementById('quest-wallet-input');
-const questResults = document.getElementById('quest-results');
-
-if (questCheckBtn && questInput) {
-    questCheckBtn.addEventListener('click', checkQuestStatus);
-    questInput.addEventListener('keypress', (e) => {
-        if (e.key === 'Enter') checkQuestStatus();
-    });
-}
-
-async function checkQuestStatus() {
-    const address = questInput.value.trim();
-    if (!address || !address.startsWith('0x')) {
-        alert('Please enter a valid wallet address');
-        return;
-    }
-
-    const originalText = questCheckBtn.textContent;
-    questCheckBtn.textContent = 'Checking...';
-    questCheckBtn.disabled = true;
-
-    try {
-        // Use the verify endpoint which sums up all scores
-        const response = await fetch(`https://arcadebots.solarstudios.co/api/verify?wallet=${address}`);
-        const data = await response.json();
-
-        if (data && typeof data.totalScore !== 'undefined') {
-            document.getElementById('quest-total-score').textContent = data.totalScore.toLocaleString();
-
-            const statusText = document.getElementById('quest-status-text');
-            const remainingVal = document.getElementById('quest-remaining');
-
-            if (data.completed) {
-                statusText.textContent = "COMPLETED! 🎉";
-                statusText.style.color = "#45ffb1"; // Success Green
-                remainingVal.textContent = "0";
-                remainingVal.style.color = "#45ffb1";
-            } else {
-                statusText.textContent = "In Progress";
-                statusText.style.color = "#ffcc00"; // Warning Yellow
-                const needed = Math.max(0, 5000 - data.totalScore);
-                remainingVal.textContent = needed.toLocaleString();
-                remainingVal.style.color = "#ff4f6d"; // Red
-            }
-
-            questResults.style.display = 'block';
-
-            // Animation for effect
-            questResults.style.opacity = '0';
-            requestAnimationFrame(() => {
-                questResults.style.transition = 'opacity 0.5s ease';
-                questResults.style.opacity = '1';
-            });
-        } else {
-            alert('Could not fetch data. Try again later.');
-        }
-    } catch (error) {
-        console.error('Quest check failed:', error);
-        alert('Failed to connect to Quest API. Make sure you are online.');
-    } finally {
-        questCheckBtn.textContent = originalText;
-        questCheckBtn.disabled = false;
-    }
-}
 
