@@ -350,7 +350,8 @@ export async function COM_FetchPak( url, filename, onProgress ) {
 
 	}
 
-	// Browser: use fetch
+	// Browser: use fetch (show initial progress so user sees activity on slow/CDN)
+	if ( onProgress ) onProgress( 0.02 );
 	const response = await fetch( url );
 	if ( ! response.ok ) {
 

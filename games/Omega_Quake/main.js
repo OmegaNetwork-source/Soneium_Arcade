@@ -20,9 +20,18 @@ const parms = {
 	argv: []
 };
 
-// Resolve asset base URL from this script's location so pak/maps load correctly
-// even when the page URL has no trailing slash (e.g. /games/Omega_Quake)
-const GAME_BASE_URL = new URL('./', import.meta.url).href;
+// Resolve asset base URL: use document <base> so it matches the deployed URL (Vercel, etc.)
+function getGameBaseUrl() {
+	try {
+		var base = typeof document !== 'undefined' && document.querySelector && document.querySelector('base');
+		if (base && base.href) {
+			var href = base.href;
+			return href.endsWith('/') ? href : href + '/';
+		}
+	} catch (e) {}
+	return new URL('./', import.meta.url).href;
+}
+const GAME_BASE_URL = getGameBaseUrl();
 
 async function main() {
 

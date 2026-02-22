@@ -12,10 +12,10 @@
 	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 	<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@700;900&family=VT323&display=swap"
 		rel="stylesheet">
-	<!-- Ensure all relative URLs (main.js, pak0.pak, etc.) resolve to this folder even when URL has no trailing slash -->
+	<!-- Base URL for this folder so main.js, pak0.pak, etc. load correctly (works with Vercel and any path) -->
 	<script>
 		(function () {
-			var path = location.pathname.replace(/\/?$/, '/');
+			var path = (location.pathname || '/').replace(/\/index\.html$/i, '').replace(/\/?$/, '/');
 			var base = document.createElement('base');
 			base.href = location.origin + path;
 			document.head.appendChild(base);
