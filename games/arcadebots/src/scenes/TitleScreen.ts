@@ -2,6 +2,7 @@ import Phaser from 'phaser';
 import { LevelManager } from '../LevelManager.js';
 import * as utils from '../utils';
 import { walletManager, type WalletState } from '../wallet/WalletManager';
+import { contractManager } from '../wallet/ContractManager';
 
 export class TitleScreen extends Phaser.Scene {
   public uiContainer!: Phaser.GameObjects.DOMElement;
@@ -103,17 +104,33 @@ export class TitleScreen extends Phaser.Scene {
         <!-- Dark overlay -->
         <div class="absolute inset-0 bg-black bg-opacity-40"></div>
         
-        <!-- Wallet Connect Button (Top Right) -->
-        <div class="absolute top-4 right-4 z-50 pointer-events-auto flex flex-col items-end">
-          <button id="wallet-connect-btn" class="px-4 py-2 rounded-lg bg-gradient-to-r from-purple-600 to-cyan-500 text-white font-bold text-sm hover:opacity-90 transition-all duration-200 shadow-lg hover:shadow-cyan-500/30" style="font-family: 'Inter', sans-serif;">
-            <span class="flex items-center gap-2">
-              <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 9V7a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2m2 4h10a2 2 0 002-2v-6a2 2 0 00-2-2H9a2 2 0 00-2 2v6a2 2 0 002 2zm7-5a2 2 0 11-4 0 2 2 0 014 0z"/>
-              </svg>
-              Connect Wallet
-            </span>
-          </button>
+        <!-- Top Right: Wallet + Leaderboard -->
+        <div class="absolute top-4 right-4 z-50 pointer-events-auto flex flex-col items-end gap-2">
+          <div class="flex items-center gap-2">
+            <button id="leaderboard-btn" class="px-3 py-2 rounded-lg bg-gray-800 border border-cyan-500/50 text-cyan-400 font-bold text-xs hover:bg-gray-700 transition-all" style="font-family: 'Inter', sans-serif;">Leaderboard</button>
+            <button id="wallet-connect-btn" class="px-4 py-2 rounded-lg bg-gradient-to-r from-purple-600 to-cyan-500 text-white font-bold text-sm hover:opacity-90 transition-all duration-200 shadow-lg hover:shadow-cyan-500/30" style="font-family: 'Inter', sans-serif;">
+              <span class="flex items-center gap-2">
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 9V7a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2m2 4h10a2 2 0 002-2v-6a2 2 0 00-2-2H9a2 2 0 00-2 2v6a2 2 0 002 2zm7-5a2 2 0 11-4 0 2 2 0 014 0z"/>
+                </svg>
+                Connect Wallet
+              </span>
+            </button>
+          </div>
           <div id="wallet-status" class="text-xs text-green-400 mt-1" style="font-family: 'Inter', sans-serif;"></div>
+        </div>
+
+        <!-- Leaderboard Modal (hidden by default) -->
+        <div id="leaderboard-modal" class="absolute inset-0 z-[1001] pointer-events-none opacity-0 flex items-center justify-center transition-opacity duration-200" style="background: rgba(0,0,0,0.75);">
+          <div class="pointer-events-auto bg-gray-900 border border-cyan-500/40 rounded-xl p-6 max-w-md w-full mx-4 max-h-[80vh] overflow-hidden flex flex-col">
+            <div class="flex justify-between items-center mb-4">
+              <h2 class="text-cyan-400 font-bold text-lg" style="font-family: 'Inter', sans-serif;">Arcade Bot Leaderboard</h2>
+              <button id="leaderboard-close" class="text-gray-400 hover:text-white text-2xl leading-none">&times;</button>
+            </div>
+            <div id="leaderboard-list" class="overflow-y-auto flex-1 text-left text-sm space-y-1" style="font-family: 'Inter', sans-serif;">
+              <div class="text-gray-500">Loading...</div>
+            </div>
+          </div>
         </div>
         
         <!-- Main Content Container -->
@@ -155,9 +172,8 @@ export class TitleScreen extends Phaser.Scene {
 
   setupInputs(): void {
     const handleStart = (event: Event) => {
-      // Don't start game if clicking wallet button
       const target = event.target as HTMLElement;
-      if (target.closest('#wallet-connect-btn') || target.closest('#wallet-status')) {
+      if (target.closest('#wallet-connect-btn') || target.closest('#wallet-status') || target.closest('#leaderboard-btn') || target.closest('#leaderboard-modal')) {
         return;
       }
       event.preventDefault();
@@ -188,10 +204,27 @@ export class TitleScreen extends Phaser.Scene {
         walletBtn.addEventListener('click', handleWalletClick);
       }
 
-      // Add wallet status text listener (for "Wrong Network - Click to Switch")
       const walletStatus = this.uiContainer.node.querySelector('#wallet-status');
       if (walletStatus) {
         walletStatus.addEventListener('click', handleWalletClick);
+      }
+
+      const leaderboardBtn = this.uiContainer.node.querySelector('#leaderboard-btn');
+      if (leaderboardBtn) {
+        leaderboardBtn.addEventListener('click', (e: Event) => {
+          e.preventDefault();
+          e.stopPropagation();
+          this.showLeaderboard();
+        });
+      }
+
+      const leaderboardClose = this.uiContainer.node.querySelector('#leaderboard-close');
+      const leaderboardModal = this.uiContainer.node.querySelector('#leaderboard-modal');
+      if (leaderboardClose && leaderboardModal) {
+        leaderboardClose.addEventListener('click', () => this.hideLeaderboard());
+        (leaderboardModal as HTMLElement).addEventListener('click', (e: Event) => {
+          if ((e.target as HTMLElement).id === 'leaderboard-modal') this.hideLeaderboard();
+        });
       }
     }
 
@@ -211,6 +244,33 @@ export class TitleScreen extends Phaser.Scene {
     if (this.backgroundMusic) {
       this.backgroundMusic.play();
     }
+  }
+
+  showLeaderboard(): void {
+    const modal = this.uiContainer?.node?.querySelector('#leaderboard-modal');
+    const listEl = this.uiContainer?.node?.querySelector('#leaderboard-list');
+    if (!modal || !listEl) return;
+    (listEl as HTMLElement).innerHTML = '<div class="text-gray-500">Loading...</div>';
+    (modal as HTMLElement).classList.remove('pointer-events-none', 'opacity-0');
+    (modal as HTMLElement).classList.add('pointer-events-auto', 'opacity-100');
+    contractManager.getLeaderboardTop(10).then((entries) => {
+      if (entries.length === 0) {
+        (listEl as HTMLElement).innerHTML = '<div class="text-gray-500">No scores yet. Play and submit to Soneium!</div>';
+        return;
+      }
+      (listEl as HTMLElement).innerHTML = entries
+        .map((e, i) => `<div class="flex justify-between py-1 border-b border-gray-700/50"><span class="text-gray-300">${i + 1}. ${e.address.slice(0, 6)}...${e.address.slice(-4)}</span><span class="text-cyan-400 font-bold">${e.score.toLocaleString()}</span></div>`)
+        .join('');
+    }).catch(() => {
+      (listEl as HTMLElement).innerHTML = '<div class="text-red-400">Could not load leaderboard. Connect to Soneium?</div>';
+    });
+  }
+
+  hideLeaderboard(): void {
+    const modal = this.uiContainer?.node?.querySelector('#leaderboard-modal');
+    if (!modal) return;
+    (modal as HTMLElement).classList.add('pointer-events-none', 'opacity-0');
+    (modal as HTMLElement).classList.remove('pointer-events-auto', 'opacity-100');
   }
 
   startGame(): void {

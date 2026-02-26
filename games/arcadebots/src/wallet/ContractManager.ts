@@ -6,6 +6,7 @@ const GAME_ID_ARCADE_BOT = 1;
 const LEADERBOARD_ABI = [
     "function submitScore(uint8 gameId, uint256 _score) external",
     "function totalEntries(uint8 gameId) external view returns (uint256)",
+    "function getTop(uint8 gameId, uint256 limit) external view returns (address[] memory players, uint256[] memory scores)",
     "function getPlayerScore(uint8 gameId, address _player) external view returns (uint256 score, uint256 timestamp)",
     "function players(uint8 gameId, uint256 index) external view returns (address)"
 ];
@@ -88,7 +89,7 @@ class ContractManager {
      * Get player's high score from the contract
      */
     public async getOnChainHighScore(address: string): Promise<number> {
-        if (this.contractAddress === DEFAULT_CONTRACT_ADDRESS) return 0;
+        if (this.contractAddress === UNCONFIGURED_ADDRESS) return 0;
 
         try {
             const contract = await this.getContract();
@@ -97,6 +98,25 @@ class ContractManager {
         } catch (error) {
             console.error('Error fetching on-chain score:', error);
             return 0;
+        }
+    }
+
+    /**
+     * Get top scores from the on-chain leaderboard (Arcade Bot gameId = 1)
+     */
+    public async getLeaderboardTop(limit: number = 10): Promise<{ address: string; score: number }[]> {
+        if (this.contractAddress === UNCONFIGURED_ADDRESS) return [];
+
+        try {
+            const contract = await this.getContract();
+            const [addresses, scores] = await contract.getTop(GAME_ID_ARCADE_BOT, limit);
+            return Array.from({ length: addresses.length }, (_, i) => ({
+                address: addresses[i],
+                score: Number(scores[i] ?? 0),
+            }));
+        } catch (error) {
+            console.error('Error fetching leaderboard:', error);
+            return [];
         }
     }
 }

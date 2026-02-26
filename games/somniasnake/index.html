@@ -1081,6 +1081,16 @@
         }
       }
 
+      // Force fresh provider/contract so we use Soneium (1868), not a cached wrong chain
+      web3Provider = null;
+      writeContract = null;
+      readContract = null;
+      web3Provider = new ethers.providers.Web3Provider(eth, "any");
+      const network = await web3Provider.getNetwork();
+      if (Number(network.chainId) !== LEADERBOARD_CONFIG.chainId) {
+        throw new Error("Please switch your wallet to Soneium (Chain ID 1868) to submit scores.");
+      }
+
       const accounts = await eth.request({ method: "eth_requestAccounts" });
       handleAccountsChanged(accounts);
 
@@ -1095,12 +1105,8 @@
         });
       }
 
-      if (!writeContract) {
-        writeContract = new ethers.Contract(LEADERBOARD_CONFIG.address, LEADERBOARD_ABI, web3Provider.getSigner());
-      }
-      if (!readContract) {
-        readContract = new ethers.Contract(LEADERBOARD_CONFIG.address, LEADERBOARD_ABI, web3Provider);
-      }
+      writeContract = new ethers.Contract(LEADERBOARD_CONFIG.address, LEADERBOARD_ABI, web3Provider.getSigner());
+      readContract = new ethers.Contract(LEADERBOARD_CONFIG.address, LEADERBOARD_ABI, web3Provider);
 
       return writeContract;
     }
