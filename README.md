@@ -1,4 +1,4 @@
-# 🎮 Soneium Arcade
+# 🎮 Retro Stack
 
 A modern, Neo-Arcade homepage built for the Soneium Network. Built on the OP Stack by Sony Block Solutions Labs.
 
@@ -129,7 +129,7 @@ Built to showcase the power of Soneium Network:
 
 ## 📄 License
 
-This project is open source and available for use in your Soneium Arcade.
+This project is open source and available for use in your Retro Stack.
 
 ## 🤝 Contributing
 

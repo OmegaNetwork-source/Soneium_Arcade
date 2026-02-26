@@ -1,6 +1,6 @@
-# Soneium Arcade – Games
+# Retro Stack – Games
 
-These games are part of the **Soneium Arcade** monorepo and are configured for the **Soneium** network (Chain ID 1868).
+These games are part of the **Retro Stack** monorepo and are configured for the **Soneium** network (Chain ID 1868).
 
 | Game        | Folder        | Entry point           |
 |------------|----------------|------------------------|
@@ -14,7 +14,7 @@ These games are part of the **Soneium Arcade** monorepo and are configured for t
 From the **Soniuem Arcade** repo root (parent of `games/`), serve the whole site so the hub and all games work from one origin:
 
 ```bash
-# From repo root (Soniuem Arcade)
+# From repo root (Retro Stack)
 npx serve .
 # or
 python -m http.server 8080

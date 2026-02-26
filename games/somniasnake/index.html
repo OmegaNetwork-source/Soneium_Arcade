@@ -361,7 +361,7 @@
     const connectBtnTop = document.getElementById("connect-btn-top");
     const walletStatusEl = document.getElementById("wallet-status");
 
-    // Unified Soneium Arcade Leaderboard (gameId 3 = Snake)
+    // Retro Stack leaderboard (gameId 3 = Snake)
     const GAME_ID_SNAKE = 3;
     const LEADERBOARD_CONFIG = {
       address: "0x2689d4c93fe68190964076924dDf183ee8bDc57C",
@@ -1163,15 +1163,31 @@
         setSubmitFeedback("Checking records...", "info");
         const contract = await ensureWriteContract();
 
-        // Check if score actually beats current high score
+        // Safe number from BigNumber or plain number (ethers v5 returns BigNumber)
+        function toScoreNum(v) {
+          if (v == null || v === undefined) return 0;
+          if (typeof v.toNumber === "function") return v.toNumber();
+          return Number(v) || 0;
+        }
+
+        // Check if score actually beats current high score (re-read right before submit to avoid race)
         const currentHighScore = await contract.highScores(GAME_ID_SNAKE, walletAddress);
-        if (score <= currentHighScore.toNumber()) {
+        const prevScore = toScoreNum(currentHighScore);
+        if (score <= prevScore) {
           setSubmitFeedback("Must beat your record!", "error");
           submitBtn.disabled = false;
           return;
         }
 
         setSubmitFeedback("Confirming in Wallet...", "info");
+
+        // Re-read on-chain high score right before tx to avoid revert (e.g. another tab submitted)
+        const latestHigh = await contract.highScores(GAME_ID_SNAKE, walletAddress);
+        if (score <= toScoreNum(latestHigh)) {
+          setSubmitFeedback("Your score didn't beat your record.", "error");
+          submitBtn.disabled = false;
+          return;
+        }
 
         // Trigger actual on-chain transaction
         const tx = await contract.submitScore(GAME_ID_SNAKE, score, {
@@ -1194,7 +1210,16 @@
         submitBtn.style.display = "none";
       } catch (error) {
         console.error('Submission failed:', error);
-        setSubmitFeedback("Failed to submit score.", "error");
+        let msg = "Failed to submit score.";
+        const errStr = (error && (error.message || error.reason || JSON.stringify(error))) || "";
+        if (errStr.includes("ScoreNotImproved") || errStr.includes("score not improved")) {
+          msg = "Your score didn't beat your record.";
+        } else if (errStr.includes("InvalidScore") || errStr.includes("invalid score")) {
+          msg = "Score must be greater than 0.";
+        } else if (errStr.includes("chain") || errStr.includes("network") || errStr.includes("1868")) {
+          msg = error.message || msg;
+        }
+        setSubmitFeedback(msg, "error");
         submitBtn.disabled = false;
       } finally {
         submittingScore = false;

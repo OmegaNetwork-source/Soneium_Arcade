@@ -133,7 +133,7 @@ async function main() {
 				loadingOverlay.innerHTML = '<div style="padding:24px;text-align:center;color:#d8a956;max-width:480px;">' +
 					'<strong>Could not load game data</strong><br><br>' +
 					'<span style="color:#aa8;">' + (e.message || e) + '</span><br><br>' +
-					'Make sure you run a static server from the <strong>Soniuem Arcade</strong> folder so that <code>/games/Omega_Quake/pak0.pak</code> is served.<br><br>' +
+					'Make sure you run a static server from the <strong>Retro Stack</strong> folder so that <code>/games/Omega_Quake/pak0.pak</code> is served.<br><br>' +
 					'Example: <code>npx serve . -p 3000</code> or <code>npx http-server . -p 3000</code><br><br>' +
 					'Then open: <code>http://localhost:3000/games/Omega_Quake/</code></div>';
 			}
@@ -259,7 +259,7 @@ async function main() {
 		if (loadingOverlay) {
 			loadingOverlay.innerHTML = '<div style="padding:24px;text-align:center;color:#d8a956;max-width:480px;">' +
 				'<strong>Failed to load</strong><br><br><span style="color:#aa8;">' + (e.message || e) + '</span><br><br>' +
-				'Run from the Soniuem Arcade folder: <code>npx serve . -p 3000</code> then open <code>http://localhost:3000/games/Omega_Quake/</code></div>';
+				'Run from the Retro Stack folder: <code>npx serve . -p 3000</code> then open <code>http://localhost:3000/games/Omega_Quake/</code></div>';
 		}
 		Sys_Error(e.message);
 	}

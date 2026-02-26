@@ -1,7 +1,7 @@
 import { ethers } from 'ethers';
 import { walletManager } from './WalletManager';
 
-// Unified Soneium Arcade Leaderboard (gameId 1 = Arcade Bot)
+// Retro Stack leaderboard (gameId 1 = Arcade Bot)
 const GAME_ID_ARCADE_BOT = 1;
 const LEADERBOARD_ABI = [
     "function submitScore(uint8 gameId, uint256 _score) external",

@@ -383,7 +383,7 @@ document.addEventListener('DOMContentLoaded', async () => {
 });
 
 // Console easter egg
-console.log('%c🎮 Welcome to Soneium Arcade!', 'font-size: 20px; color: #ffffff; font-weight: bold;');
+console.log('%c🎮 Welcome to Retro Stack!', 'font-size: 20px; color: #ffffff; font-weight: bold;');
 console.log('%cBuilt on the Soneium Network', 'font-size: 14px; color: #888888;');
 console.log('%cInterested in building games? Contact us!', 'font-size: 12px; color: #444444;');
 
