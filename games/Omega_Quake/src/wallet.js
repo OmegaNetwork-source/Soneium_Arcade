@@ -14,7 +14,7 @@ const NETWORK_CONFIGS = {
         nativeCurrency: { name: 'Ethereum', symbol: 'ETH', decimals: 18 },
         rpcUrls: ['https://soneium.drpc.org', 'https://rpc.sentio.xyz/soneium-mainnet', 'https://rpc.soneium.org'],
         blockExplorerUrls: ['https://soneium.blockscout.com', 'https://www.okx.com/web3/explorer/soneium', 'https://soneium.slam.vision'],
-        contractAddress: '0x0000000000000000000000000000000000000000', // Deploy contracts/SoneiumArcadeLeaderboard.sol and set here
+        contractAddress: '0x2689d4c93fe68190964076924dDf183ee8bDc57C',
     }
 };
 
