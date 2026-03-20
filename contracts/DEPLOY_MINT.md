@@ -64,7 +64,7 @@ npm install
 
 ## 3. After deploy
 
-1. **Mint #1** (optional but good for explorers): call **`mint`** and send **0.0005 ETH** value (Soneium native).
+1. **Mint #1** (optional but good for explorers): call **`mint`** with the **contract’s required native value** (Soneium native — see `MINT_PRICE` in the contract).
 2. Set **`js/retro-stack-badge.js`** → `contractAddress: "0xYourDeployedAddress"`.
 3. Redeploy / push the static site so the hub mint + gating use the new address.
 
@@ -75,7 +75,7 @@ npm install
 | Item | Value |
 |------|--------|
 | Network | **Soneium** — Chain ID **1868** |
-| Mint price | **0.0005 ETH** (`msg.value`) |
+| Mint price | Set in contract as `MINT_PRICE` (`msg.value` must be ≥ that) |
 | Name / symbol | Retro Stack Player Badge / **RSPLAYER** |
 
 ---

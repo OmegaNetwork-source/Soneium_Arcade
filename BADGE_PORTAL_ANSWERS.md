@@ -33,7 +33,7 @@ The ERC-721 `tokenURI` should point to metadata JSON; that JSON’s `image` fiel
 
 ### Ensure first NFT is minted
 
-After deployment, call **`mint()`** once from any wallet and send **exactly 0.0005 ETH** (native) as value. The first successful mint creates **token ID `1`**.  
+After deployment, call **`mint()`** once from any wallet with the **native token value required by the contract** (see `MINT_PRICE` on-chain). The first successful mint creates **token ID `1`**.  
 You can use the **Mint** button on the Retro Stack hub (`#player-badge`) or any wallet contract UI.
 
 ---
@@ -61,7 +61,7 @@ The token **cannot be transferred** to another wallet, so it **cannot** be sold 
 ### Criteria to acquire NFT / minting link
 
 - **Network:** Soneium (Chain ID **1868**).  
-- **Price:** **0.0005 ETH** (native token) per mint, fixed.  
+- **Price:** Fixed per mint; amount is defined in the contract (`MINT_PRICE`) and shown in the wallet at confirm time.  
 - **Supply:** Unlimited total mints; **one badge per wallet** (cannot mint twice from the same address).  
 - **Minting:** Official hub section:  
   **`https://soneium-arcade.vercel.app/#player-badge`**  

@@ -29,7 +29,7 @@ Update `badge/metadata.json` and set the `image` field to the **full URL** of `b
 
 ## After deploy
 
-1. **First NFT**: Call `mint()` once from any wallet and confirm with **0.0005 ETH** (native) so tokenId `1` exists (optional but helps explorers/marketplaces show supply).
+1. **First NFT**: Call `mint()` once from any wallet with the **native amount required by the contract** so tokenId `1` exists (optional but helps explorers/marketplaces show supply).
 2. Copy the **contract address** into `js/retro-stack-badge.js` as `contractAddress`.
 3. Rebuild / redeploy the static site so gating uses the live address.
 

@@ -4,7 +4,7 @@ pragma solidity ^0.8.20;
 /**
  * @title RetroStackPlayerBadge
  * @notice Soulbound (non-transferable) ERC-721 access badge for Retro Stack.
- *         Unlimited supply; one mint per wallet; fixed price 0.0005 native token.
+ *         Unlimited supply; one mint per wallet; fixed mint price (see MINT_PRICE).
  * @dev Deploy with full HTTPS URI to metadata JSON, e.g. https://yoursite.com/badge/metadata.json
  *      Use OpenZeppelin v5. Install: npm i @openzeppelin/contracts (or Remix + OZ).
  */
@@ -12,7 +12,7 @@ import {ERC721} from "@openzeppelin/contracts/token/ERC721/ERC721.sol";
 import {Ownable} from "@openzeppelin/contracts/access/Ownable.sol";
 
 contract RetroStackPlayerBadge is ERC721, Ownable {
-    uint256 public constant MINT_PRICE = 0.0005 ether;
+    uint256 public constant MINT_PRICE = 5e14; // wei — match hub `mintPriceWei` in js/retro-stack-badge.js
     uint256 private _nextTokenId;
 
     error NonTransferable();

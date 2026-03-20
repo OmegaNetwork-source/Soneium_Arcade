@@ -12,7 +12,7 @@ import "https://github.com/OpenZeppelin/openzeppelin-contracts/blob/v5.0.2/contr
 import "https://github.com/OpenZeppelin/openzeppelin-contracts/blob/v5.0.2/contracts/access/Ownable.sol";
 
 contract RetroStackPlayerBadge is ERC721, Ownable {
-    uint256 public constant MINT_PRICE = 0.0005 ether;
+    uint256 public constant MINT_PRICE = 5e14; // wei (native on Soneium)
     uint256 private _nextTokenId;
 
     error NonTransferable();

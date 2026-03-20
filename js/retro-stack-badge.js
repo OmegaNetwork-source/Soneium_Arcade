@@ -130,7 +130,7 @@
         '">mint</a></div>';
     } else {
       inner.innerHTML =
-        "<h2>Badge required</h2><p>This game needs the soulbound <strong>Player Badge</strong> (0.0005 ETH on Soneium, one per wallet). Mint on the hub, then come back — or connect a wallet that already minted.</p>" +
+        "<h2>Badge required</h2><p>This game needs the soulbound <strong>Player Badge</strong> on Soneium (one per wallet). Mint on the hub, then come back — or connect a wallet that already minted.</p>" +
         '<div class="rs-actions"><a class="rs-btn rs-primary" href="' +
         home +
         "#" +
