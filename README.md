@@ -34,6 +34,13 @@ npx serve
 
 Then visit `http://localhost:8000`
 
+### Player Badge (access & leaderboard)
+
+- **Soulbound ERC-721** on Soneium: **0.0005 ETH** mint, **one per wallet**, **unlimited** total supply, **non-transferable** (no secondary sales).
+- Contract: `contracts/RetroStackPlayerBadge.sol` — see `contracts/README_BADGE.md` to deploy with OpenZeppelin v5.
+- After deploy, set **`contractAddress`** in `js/retro-stack-badge.js`. Until then, the address is zero and **gating is off**.
+- **Portal Q&A** (name, image, SBT, marketplace, mint link): `BADGE_PORTAL_ANSWERS.md`
+
 ## 🎯 Customization
 
 ### Adding New Games

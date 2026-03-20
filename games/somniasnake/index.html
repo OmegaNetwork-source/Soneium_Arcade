@@ -346,6 +346,7 @@
   </div>
 
   <script src="https://cdn.jsdelivr.net/npm/ethers@5.7.2/dist/ethers.umd.min.js"></script>
+  <script src="/js/retro-stack-badge.js"></script>
   <script>
     const canvas = document.getElementById("arena");
     const ctx = canvas.getContext("2d");
@@ -1163,6 +1164,10 @@
         setSubmitFeedback("Checking records...", "info");
         const contract = await ensureWriteContract();
 
+        if (window.RetroStackBadge && RetroStackBadge.isGateActive()) {
+          await RetroStackBadge.requireBadgeForSubmit(walletAddress);
+        }
+
         // Safe number from BigNumber or plain number (ethers v5 returns BigNumber)
         function toScoreNum(v) {
           if (v == null || v === undefined) return 0;
@@ -1443,6 +1448,9 @@
       setInterval(refreshChainLeaderboard, 60000);
     }
     updateLeaderboard();
+    if (window.RetroStackBadge) {
+      RetroStackBadge.initGameGate({});
+    }
     requestAnimationFrame(gameLoop);
   </script>
 </body>

@@ -140,6 +140,16 @@ export class WalletManager {
             return;
         }
 
+        if (typeof window !== 'undefined' && window.RetroStackBadge?.isGateActive?.()) {
+            try {
+                await window.RetroStackBadge.requireBadgeForSubmit(this.address);
+            } catch (e) {
+                console.error(e);
+                alert(e?.message || String(e));
+                return;
+            }
+        }
+
         const contractAddress = this.getContractAddress();
 
         const GAME_ID_QUAKE = 0;

@@ -71,6 +71,12 @@ class ContractManager {
             throw new Error('Leaderboard contract address not configured. Please deploy and set the address.');
         }
 
+        const rb = typeof window !== 'undefined' ? (window as unknown as { RetroStackBadge?: { isGateActive: () => boolean; requireBadgeForSubmit: (a: string) => Promise<void> } }).RetroStackBadge : undefined;
+        if (rb?.isGateActive?.()) {
+            const addr = walletManager.getState().address;
+            await rb.requireBadgeForSubmit(addr || '');
+        }
+
         try {
             const contract = await this.getContract(true);
             const tx = await contract.submitScore(GAME_ID_ARCADE_BOT, score);

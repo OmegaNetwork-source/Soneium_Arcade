@@ -29,6 +29,7 @@
             </a>
             <div class="nav-links">
                 <a href="#games">Games</a>
+                <a href="#player-badge">Player Badge</a>
                 <a href="#collection">Collection</a>
                 <a href="#about">About</a>
             </div>
@@ -274,6 +275,27 @@
         </div>
     </section>
 
+    <!-- Player Badge (soulbound ERC-721) — mint on Soneium to unlock games + leaderboard -->
+    <section id="player-badge" class="player-badge-section">
+        <div class="section-header">
+            <h2>Player Badge</h2>
+            <p>Soulbound access pass — unlock all Wave 1 games &amp; on-chain leaderboard submissions (0.0005 ETH, one per wallet)</p>
+        </div>
+        <div class="player-badge-card">
+            <div class="player-badge-preview">
+                <img src="badge/badge.svg" width="180" height="180" alt="Retro Stack Player Badge artwork" loading="lazy" />
+            </div>
+            <div class="player-badge-copy">
+                <p id="rs-badge-status-line" class="player-badge-status">Checking badge status…</p>
+                <p class="player-badge-note">
+                    Non-transferable (SBT-style). Not for sale or resale on marketplaces — tied to your wallet forever.
+                </p>
+                <button type="button" id="rs-badge-mint-btn" class="btn-primary player-badge-mint">Mint Player Badge</button>
+                <p id="rs-badge-mint-status" class="player-badge-tx" aria-live="polite"></p>
+            </div>
+        </div>
+    </section>
+
     <!-- Features Section -->
     <section class="features-section">
         <div class="section-header">
@@ -487,7 +509,17 @@
         </div>
     </footer>
 
+    <script src="https://cdn.jsdelivr.net/npm/ethers@5.7.2/dist/ethers.umd.min.js"></script>
+    <script src="js/retro-stack-badge.js"></script>
     <script src="script.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            if (window.RetroStackBadge) {
+                RetroStackBadge.initHubMintUI();
+                RetroStackBadge.initHubPlayGate();
+            }
+        });
+    </script>
 </body>
 
 </html>

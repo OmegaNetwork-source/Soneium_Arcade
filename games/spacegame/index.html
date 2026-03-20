@@ -390,6 +390,7 @@
     <span id="muteIcon" style="font-size: 24px; color: #fff;">🔊</span>
   </div>
   <script src="https://cdn.jsdelivr.net/npm/ethers@5.7.2/dist/ethers.umd.min.js"></script>
+  <script src="/js/retro-stack-badge.js"></script>
   <script>
     var ASSET_BASE = (function () {
       var path = (window.location.pathname || '/').replace(/\/index\.html$/i, '').replace(/\/?$/, '');
@@ -1610,6 +1611,9 @@
       goSubmitBtn.disabled = true;
       goSubmitBtn.innerText = 'Confirm in Wallet...';
       try {
+        if (window.RetroStackBadge && RetroStackBadge.isGateActive()) {
+          await RetroStackBadge.requireBadgeForSubmit(userAddress);
+        }
         await getContract(); // Ensure contract is ready with signer
         const centiSeconds = Math.round(lastGameOverScore * 100);
 
@@ -1686,6 +1690,10 @@
         alert('Failed to load leaderboard: ' + (err.message || err));
       }
     }
+
+    document.addEventListener('DOMContentLoaded', function () {
+      if (window.RetroStackBadge) RetroStackBadge.initGameGate({});
+    });
   </script>
 </body>
 

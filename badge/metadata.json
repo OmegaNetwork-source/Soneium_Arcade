@@ -1,0 +1,11 @@
+{
+  "name": "Retro Stack Player Badge",
+  "description": "Soulbound player pass for Retro Stack on Soneium. Unlocks Wave 1 games and on-chain leaderboard submissions. Non-transferable (SBT).",
+  "image": "https://soneiumarcade.omeganetwork.co/badge/badge.png",
+  "external_url": "https://soneiumarcade.omeganetwork.co/",
+  "attributes": [
+    { "trait_type": "Network", "value": "Soneium" },
+    { "trait_type": "Type", "value": "Soulbound ERC-721" },
+    { "trait_type": "Supply", "value": "Unlimited" }
+  ]
+}

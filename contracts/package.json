@@ -1,0 +1,8 @@
+{
+  "name": "retro-stack-contracts",
+  "private": true,
+  "description": "OpenZeppelin for RetroStackPlayerBadge.sol (compile in Remix or with solc + remappings)",
+  "devDependencies": {
+    "@openzeppelin/contracts": "^5.0.2"
+  }
+}

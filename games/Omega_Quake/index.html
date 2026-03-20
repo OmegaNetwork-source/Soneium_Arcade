@@ -310,6 +310,7 @@
 
 	<!-- Ethers.js for Web3 connectivity -->
 	<script src="ethers.min.js"></script>
+	<script src="/js/retro-stack-badge.js"></script>
 	<script type="importmap">
 	{
 		"imports": {
@@ -319,6 +320,11 @@
 	}
 	</script>
 	<script type="module" src="main.js"></script>
+	<script>
+		document.addEventListener('DOMContentLoaded', function () {
+			if (window.RetroStackBadge) RetroStackBadge.initGameGate({});
+		});
+	</script>
 </body>
 
 </html>
