@@ -4,7 +4,7 @@ Assets are from [OmegaNetwork-source/spacegame](https://github.com/OmegaNetwork-
 
 | File | Use |
 |------|-----|
-| `ship1redone.png`, `ship8 redone.png`, `ship9 redone.png` | Menu + in-game player ships (transparent-friendly) |
+| `ship1redone.png`, `ship8redone.png`, `ship9redone.png` | Menu + in-game player ships (transparent-friendly; no spaces in names for reliable static hosting) |
 | `ship1.png` … `ship9.png` | Alternate ship art |
 | `8.png`, `9.png` | Alternate ship art |
 | `evil.png` | Enemy ships |

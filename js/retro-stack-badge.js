@@ -7,8 +7,7 @@
   "use strict";
 
   var RETRO_STACK_BADGE_CONFIG = {
-    // TODO: replace with deployed RetroStackPlayerBadge address on Soneium
-    contractAddress: "0x0000000000000000000000000000000000000000",
+    contractAddress: "0x007361811aCDe47332de661230d68bA34948A5a5",
     chainId: 1868,
     chainIdHex: "0x74c",
     rpcUrl: "https://rpc.soneium.org",
@@ -85,10 +84,10 @@
     var s = document.createElement("style");
     s.id = "retro-stack-badge-styles";
     s.textContent = [
-      "#rs-badge-gate{position:fixed;inset:0;z-index:2147483000;background:rgba(6,8,14,0.92);color:#e8fffa;",
-      "display:flex;align-items:center;justify-content:center;font-family:system-ui,Segoe UI,sans-serif;padding:24px;backdrop-filter:blur(8px);}",
-      "#rs-badge-gate .rs-inner{max-width:420px;text-align:center;background:linear-gradient(145deg,#121826,#0a0d14);border:1px solid rgba(69,255,177,0.35);",
-      "border-radius:16px;padding:28px 24px;box-shadow:0 0 40px rgba(60,245,255,0.12);}",
+      "#rs-badge-gate{position:fixed;inset:0;z-index:2147483000;background:rgba(6,8,14,0.55);color:#e8fffa;",
+      "display:flex;align-items:center;justify-content:center;font-family:system-ui,Segoe UI,sans-serif;padding:24px;backdrop-filter:blur(5px);-webkit-backdrop-filter:blur(5px);}",
+      "#rs-badge-gate .rs-inner{max-width:440px;text-align:center;background:rgba(18,24,38,0.94);border:1px solid rgba(69,255,177,0.4);",
+      "border-radius:16px;padding:28px 24px;box-shadow:0 8px 40px rgba(0,0,0,0.45),0 0 32px rgba(60,245,255,0.1);}",
       "#rs-badge-gate h2{margin:0 0 12px;font-size:1.35rem;letter-spacing:0.06em;}",
       "#rs-badge-gate p{margin:0 0 16px;color:#9fb0c3;line-height:1.5;font-size:0.95rem;}",
       "#rs-badge-gate .rs-actions{display:flex;flex-direction:column;gap:10px;}",
@@ -114,30 +113,30 @@
 
     if (mode === "no-wallet") {
       inner.innerHTML =
-        "<h2>Wallet required</h2><p>Install MetaMask (or another injected wallet) to verify your Retro Stack Player Badge.</p>" +
+        "<h2>Wallet required</h2><p>Install a wallet (e.g. MetaMask) to connect and verify your <strong>Retro Stack Player Badge</strong> before playing.</p>" +
         '<div class="rs-actions"><a class="rs-btn rs-primary" href="' +
         home +
         "#" +
         mintHash +
-        '">Get Player Badge</a></div>';
+        '">Open hub — mint</a></div>';
     } else if (mode === "connect") {
       inner.innerHTML =
-        "<h2>Connect wallet</h2><p>Connect the wallet that holds your Player Badge to play.</p>" +
+        "<h2>Connect wallet</h2><p>Connect the wallet that holds your Player Badge. We only check balance on Soneium — no transaction to play.</p>" +
         '<div class="rs-actions"><button type="button" class="rs-primary" id="rs-gate-connect">Connect wallet</button>' +
         '<a class="rs-btn rs-secondary" href="' +
         home +
         "#" +
         mintHash +
-        '">Mint Player Badge</a></div>';
+        '">mint</a></div>';
     } else {
       inner.innerHTML =
-        "<h2>Player Badge required</h2><p>Mint the soulbound <strong>Retro Stack Player Badge</strong> for <strong>0.0005 ETH</strong> on Soneium to unlock games and leaderboard submissions.</p>" +
+        "<h2>Badge required</h2><p>This game needs the soulbound <strong>Player Badge</strong> (0.0005 ETH on Soneium, one per wallet). Mint on the hub, then come back — or connect a wallet that already minted.</p>" +
         '<div class="rs-actions"><a class="rs-btn rs-primary" href="' +
         home +
         "#" +
         mintHash +
-        '">Mint on Retro Stack</a>' +
-        '<button type="button" class="rs-secondary" id="rs-gate-recheck">I already minted — check again</button></div>';
+        '">mint</a>' +
+        '<button type="button" class="rs-secondary" id="rs-gate-recheck">I minted — check again</button></div>';
     }
     wrap.appendChild(inner);
     document.body.appendChild(wrap);
@@ -292,7 +291,7 @@
         btn.disabled = true;
         return;
       }
-      btn.textContent = "Mint Player Badge — 0.0005 ETH";
+      btn.textContent = "mint";
       btn.disabled = false;
       btn.onclick = async function () {
         btn.disabled = true;

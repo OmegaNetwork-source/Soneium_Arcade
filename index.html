@@ -50,14 +50,36 @@
                 </h1>
                 <p class="hero-powered">Powered by Omega</p>
                 <p class="hero-subtitle">
-                    Play games, compete with friends, and win prizes. Wave 1 is launching soon on Soneium.
+                    You need a <strong>Player Badge</strong> to play Wave 1 games and submit scores on-chain. Mint yours on Soneium below, then hit Explore Games.
                 </p>
                 <div class="hero-buttons">
                     <a href="#games" class="btn-primary">Explore Games</a>
+                    <a href="#player-badge" class="btn-secondary hero-btn-mint">mint</a>
                     <a href="#collection" class="btn-secondary">Explore Collection</a>
                 </div>
             </div>
         </div>
+
+        <!-- Player Badge — directly below hero screen -->
+        <section id="player-badge" class="player-badge-section player-badge-after-hero">
+            <div class="section-header">
+                <h2>Player Badge</h2>
+                <p>Soulbound access pass — unlock all Wave 1 games &amp; on-chain leaderboard submissions (0.0005 ETH, one per wallet)</p>
+            </div>
+            <div class="player-badge-card">
+                <div class="player-badge-preview">
+                    <img src="badge/badge.png" width="180" height="180" alt="Retro Stack Player Badge artwork" loading="lazy" />
+                </div>
+                <div class="player-badge-copy">
+                    <p id="rs-badge-status-line" class="player-badge-status">Checking badge status…</p>
+                    <p class="player-badge-note">
+                        Non-transferable (SBT-style). Not for sale or resale on marketplaces — tied to your wallet forever.
+                    </p>
+                    <button type="button" id="rs-badge-mint-btn" class="btn-primary player-badge-mint">mint</button>
+                    <p id="rs-badge-mint-status" class="player-badge-tx" aria-live="polite"></p>
+                </div>
+            </div>
+        </section>
     </section>
 
     <!-- Featured Games Section -->
@@ -271,27 +293,6 @@
                         <p>Awaiting signal...</p>
                     </div>
                 </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Player Badge (soulbound ERC-721) — mint on Soneium to unlock games + leaderboard -->
-    <section id="player-badge" class="player-badge-section">
-        <div class="section-header">
-            <h2>Player Badge</h2>
-            <p>Soulbound access pass — unlock all Wave 1 games &amp; on-chain leaderboard submissions (0.0005 ETH, one per wallet)</p>
-        </div>
-        <div class="player-badge-card">
-            <div class="player-badge-preview">
-                <img src="badge/badge.svg" width="180" height="180" alt="Retro Stack Player Badge artwork" loading="lazy" />
-            </div>
-            <div class="player-badge-copy">
-                <p id="rs-badge-status-line" class="player-badge-status">Checking badge status…</p>
-                <p class="player-badge-note">
-                    Non-transferable (SBT-style). Not for sale or resale on marketplaces — tied to your wallet forever.
-                </p>
-                <button type="button" id="rs-badge-mint-btn" class="btn-primary player-badge-mint">Mint Player Badge</button>
-                <p id="rs-badge-mint-status" class="player-badge-tx" aria-live="polite"></p>
             </div>
         </div>
     </section>
